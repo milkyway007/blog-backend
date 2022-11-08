@@ -1,57 +1,56 @@
 ﻿using Blog.Domain;
+using Blog.Options;
+using Microsoft.Extensions.Options;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Blog.Services
 {
     public class PostService : IPostService
     {
-        private readonly List<Post> _posts;
+        private readonly IMongoCollection<Post> _posts;
 
-        public PostService()
+        public PostService(IOptions<MongoDbOptions> mongoDbOptions)
         {
-            _posts = new List<Post>();
-            for (int i = 0; i < 5; i++)
-            {
-                _posts.Add(new Post
-                {
-                    Id = Guid.NewGuid(),
-                    Name = $"Post name {i}",
-                });
-            }
+            MongoClient client = new MongoClient(mongoDbOptions.Value.ConnectionURI);
+            IMongoDatabase database = client.GetDatabase(mongoDbOptions.Value.DatabaseName);
+
+            _posts = database.GetCollection<Post>(mongoDbOptions.Value.CollectionName);
         }
 
-        public bool DeletePost(Guid postId)
+        public async Task CreateAsync(Post post)
         {
-            var post = GetPostById(postId);
-
-            if (post == null)
-                return false;
-
-            _posts.Remove(post);
-
-            return true;
+            await _posts.InsertOneAsync(post);
         }
 
-        public Post GetPostById(Guid postId)
+        public async Task<bool> DeletePostAsync(string postId)
         {
-            return _posts.SingleOrDefault(x => x.Id == postId);
+            FilterDefinition<Post> filter = Builders<Post>.Filter.Eq("Id", postId);
+            var deleted = await _posts.FindOneAndDeleteAsync(filter);
+
+            return deleted != null;
         }
 
-        public List<Post> GetPosts()
+        public async Task<Post> GetPostByIdAsync(string postId)
         {
-            return _posts;
+            FilterDefinition<Post> filter = Builders<Post>.Filter.Eq("Id", postId);
+
+            return await _posts.Find(filter).FirstOrDefaultAsync();
         }
 
-        public bool UpdatePost(Post postToUpdate)
+        public async Task<List<Post>> GetPostsAsync()
         {
-            var exists = GetPostById(postToUpdate.Id) != null;
+            return await _posts.Find(new BsonDocument()).ToListAsync();
+        }
 
-            if (!exists)
-                return false;
+        public async Task<bool> UpdatePostAsync(Post postToUpdate)
+        {
+            FilterDefinition<Post> filter = Builders<Post>.Filter.Eq("Id", postToUpdate.Id);
+            UpdateDefinition<Post> update = Builders<Post>.Update.AddToSet("name", postToUpdate.Title);
 
-            var index = _posts.FindIndex(post => post.Id == postToUpdate.Id);
-            _posts[index] = postToUpdate;
+            var updated = await _posts.FindOneAndUpdateAsync(filter, update);
 
-            return true;
+            return updated != null;
         }
     }
 }

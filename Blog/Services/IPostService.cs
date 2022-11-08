@@ -4,12 +4,14 @@ namespace Blog.Services
 {
     public interface IPostService
     {
-        List<Post> GetPosts();
+        Task CreateAsync(Post post);
 
-        Post GetPostById(Guid postId);
+        Task<List<Post>> GetPostsAsync();
 
-        bool UpdatePost(Post postToUpdate);
+        Task<Post> GetPostByIdAsync(string postId);
 
-        bool DeletePost(Guid postId);
+        Task<bool> UpdatePostAsync(Post postToUpdate);
+
+        Task<bool> DeletePostAsync(string postId);
     }
 }
