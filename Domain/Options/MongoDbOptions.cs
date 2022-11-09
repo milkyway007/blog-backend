@@ -1,4 +1,4 @@
-﻿namespace Blog.Options
+﻿namespace Domain.Options
 {
     public class MongoDbOptions
     {

@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 
-namespace Blog.Domain
+namespace Domain.Entities
 {
     public class Post
     {

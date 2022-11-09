@@ -1,5 +1,5 @@
 using Blog.Installers;
-using Blog.Options;
+using Domain.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,5 +1,6 @@
-﻿using Blog.Options;
-using Blog.Services;
+﻿using Domain.Options;
+using Persistence;
+using Persistence.Interfaces;
 
 namespace Blog.Installers
 {

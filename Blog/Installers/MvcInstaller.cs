@@ -1,4 +1,6 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Application.Posts;
+using MediatR;
+using Microsoft.OpenApi.Models;
 
 namespace Blog.Installers
 {
@@ -11,6 +13,7 @@ namespace Blog.Installers
             {
                 x.SwaggerDoc("v1", new OpenApiInfo { Title = "Blog API", Version = "v1" }); ;
             });
+            services.AddMediatR(typeof(List.Handler).Assembly);
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using Blog.Domain;
+﻿using Domain.Entities;
 
-namespace Blog.Services
+namespace Persistence.Interfaces
 {
     public interface IPostService
     {

@@ -1,30 +1,23 @@
-﻿using Blog.Contracts.V1.Requests;
+﻿using Application.Posts;
+using Blog.Contracts.V1.Requests;
 using Blog.Contracts.V1.Responses;
-using Blog.Domain;
-using Blog.Services;
+using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Controllers.V1
 {
-    public class PostsController : Controller
+    public class PostsController : BaseApiController
     {
-        private readonly IPostService _postService;
-
-        public PostsController(IPostService postService)
-        {
-            _postService = postService;
-        }
-
         [HttpGet(Contracts.V1.ApiRoutes.Posts.GetAll)]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _postService.GetPostsAsync());
+            return Ok(await Mediator.Send(new List.Query()));
         }
 
         [HttpGet(Contracts.V1.ApiRoutes.Posts.Get)]
         public async Task<IActionResult> Get([FromRoute] string postId)
         {
-            var post = await _postService.GetPostByIdAsync(postId);
+            var post = await Mediator.Send(new Details.Query { Id = postId});
             if (post == null)
                 return NotFound();
 

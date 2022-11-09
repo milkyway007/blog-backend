@@ -1,10 +1,11 @@
-﻿using Blog.Domain;
-using Blog.Options;
+﻿using Domain.Entities;
+using Domain.Options;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Persistence.Interfaces;
 
-namespace Blog.Services
+namespace Persistence
 {
     public class PostService : IPostService
     {
