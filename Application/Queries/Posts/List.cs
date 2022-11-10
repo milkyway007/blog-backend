@@ -19,7 +19,7 @@ namespace Application.Posts
 
             public async Task<List<Post>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _postService.GetPostsAsync();
+                return await _postService.GetPostsAsync(cancellationToken);
             }
         }
     }

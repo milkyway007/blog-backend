@@ -22,7 +22,7 @@ namespace Application.Posts
 
             public async Task<Post> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _postService.GetPostByIdAsync(request.Id);
+                return await _postService.GetPostByIdAsync(request.Id, cancellationToken);
             }
         }
     }

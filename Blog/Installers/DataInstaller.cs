@@ -11,9 +11,6 @@ namespace Blog.Installers
             services.Configure<MongoDbOptions>(configuration.GetSection("MongoDB"));
 
             services.AddSingleton<IPostService, PostService>();
-
-            services.AddControllers()
-                .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Application.Posts;
+﻿using Application.Commands.Posts;
+using Application.Posts;
+using Application.Queries.Posts;
 using Blog.Contracts.V1.Requests;
 using Blog.Contracts.V1.Responses;
 using Domain.Entities;
@@ -9,41 +11,49 @@ namespace Blog.Controllers.V1
     public class PostsController : BaseApiController
     {
         [HttpGet(Contracts.V1.ApiRoutes.Posts.GetAll)]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
-            return Ok(await Mediator.Send(new List.Query()));
+            return Ok(await Mediator.Send(new List.Query(), cancellationToken));
         }
 
         [HttpGet(Contracts.V1.ApiRoutes.Posts.Get)]
-        public async Task<IActionResult> Get([FromRoute] string postId)
+        public async Task<IActionResult> Get(string postId, CancellationToken cancellationToken)
         {
-            var post = await Mediator.Send(new Details.Query { Id = postId});
+            var post = await Mediator.Send(new Details.Query { Id = postId}, cancellationToken);
             if (post == null)
                 return NotFound();
 
             return Ok(post);
         }
 
-        [HttpPut(Contracts.V1.ApiRoutes.Posts.Update)]
-        public async Task<IActionResult> Update([FromRoute] string postId, [FromBody] UpdatePostRequest updatePostRequest)
+        [HttpPatch(Contracts.V1.ApiRoutes.Posts.Update)]
+        public async Task<IActionResult> Update(
+            string postId,
+            UpdatePostRequest updatePostRequest,
+            CancellationToken cancellationToken)
         {
             var post = new Post
             {
                 Id = postId,
-                Title = updatePostRequest.Name,
+                Title = updatePostRequest.Title,
+                Message = updatePostRequest.Message,
+                Modified = DateTime.Now,
             };
 
-            var isUpdated = await _postService.UpdatePostAsync(post);
-            if (isUpdated)
+            var found = await Mediator.Send(new Edit.Query { Post = post }, cancellationToken);
+            if (found != null)
+            {
+                post.Created = found.Created;
                 return Ok(post);
+            }
 
             return NotFound();
         }
 
         [HttpDelete(Contracts.V1.ApiRoutes.Posts.Delete)]
-        public async Task<IActionResult> Delete([FromRoute] string postId)
+        public async Task<IActionResult> Delete(string postId, CancellationToken cancellationToken)
         {
-            var isDeleted = await _postService.DeletePostAsync(postId);
+            var isDeleted = await Mediator.Send(new Delete.Command { Id = postId }, cancellationToken);
             if (isDeleted)
                 return NoContent();
 
@@ -51,11 +61,17 @@ namespace Blog.Controllers.V1
         }
 
         [HttpPost(Contracts.V1.ApiRoutes.Posts.Create)]
-        public async Task<IActionResult> Create([FromBody] CreatePostRequest postRequest)
+        public async Task<IActionResult> Create(CreatePostRequest postRequest, CancellationToken cancellationToken)
         {
-            var post = new Post { Title = postRequest.Name };
+            var post = new Post
+            { 
+                Title = postRequest.Title,
+                Message = postRequest.Message,
+                Created = DateTime.Now,
+                Modified = DateTime.Now,
+            };
 
-            await _postService.CreateAsync(post);
+            await Mediator.Send(new Create.Command { Post = post}, cancellationToken);
             var response = new CreatePostResponse { Id = post.Id };
 
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";

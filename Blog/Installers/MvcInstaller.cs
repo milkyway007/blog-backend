@@ -1,6 +1,7 @@
 ﻿using Application.Posts;
 using MediatR;
 using Microsoft.OpenApi.Models;
+using System.Text.Json;
 
 namespace Blog.Installers
 {
@@ -9,6 +10,8 @@ namespace Blog.Installers
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddControllersWithViews();
+            services.AddControllers()
+                .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
             services.AddSwaggerGen(x =>
             {
                 x.SwaggerDoc("v1", new OpenApiInfo { Title = "Blog API", Version = "v1" }); ;
