@@ -10,7 +10,7 @@ namespace Persistence.Interfaces
 
         Task<Post> GetPostByIdAsync(string postId, CancellationToken cancellationToken);
 
-        Task<Post> UpdatePostAsync(Post postToUpdate, CancellationToken cancellationToken);
+        Task<bool> UpdatePostAsync(Post postToUpdate, CancellationToken cancellationToken);
 
         Task<bool> DeletePostAsync(string postId, CancellationToken cancellationToken);
     }

@@ -1,6 +1,5 @@
 ﻿using Application.Commands.Posts;
 using Application.Posts;
-using Application.Queries.Posts;
 using Blog.Contracts.V1.Requests;
 using Blog.Contracts.V1.Responses;
 using Domain.Entities;
@@ -40,10 +39,9 @@ namespace Blog.Controllers.V1
                 Modified = DateTime.Now,
             };
 
-            var found = await Mediator.Send(new Edit.Query { Post = post }, cancellationToken);
-            if (found != null)
+            var isUpdated = await Mediator.Send(new Edit.Query { Post = post }, cancellationToken);
+            if (isUpdated)
             {
-                post.Created = found.Created;
                 return Ok(post);
             }
 

@@ -1,4 +1,5 @@
-﻿using Application.Posts;
+﻿using Application.Core;
+using Application.Posts;
 using MediatR;
 using Microsoft.OpenApi.Models;
 using System.Text.Json;
@@ -17,6 +18,7 @@ namespace Blog.Installers
                 x.SwaggerDoc("v1", new OpenApiInfo { Title = "Blog API", Version = "v1" }); ;
             });
             services.AddMediatR(typeof(List.Handler).Assembly);
+            services.AddAutoMapper(typeof(MappingProfiles).Assembly);
         }
     }
 }

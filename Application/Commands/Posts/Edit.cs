@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using AutoMapper;
+using Domain.Entities;
 using MediatR;
 using Persistence.Interfaces;
 using System;
@@ -7,16 +8,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Queries.Posts
+namespace Application.Commands.Posts
 {
     public class Edit
     {
-        public class Query : IRequest<Post>
+        public class Query : IRequest<bool>
         {
             public Post Post { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Post>
+        public class Handler : IRequestHandler<Query, bool>
         {
             private readonly IPostService _postService;
 
@@ -25,7 +26,7 @@ namespace Application.Queries.Posts
                 _postService = postService;
             }
 
-            public async Task<Post> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<bool> Handle(Query request, CancellationToken cancellationToken)
             {
                 return await _postService.UpdatePostAsync(request.Post, cancellationToken);
             }

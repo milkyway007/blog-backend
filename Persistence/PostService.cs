@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using AutoMapper;
+using Domain.Entities;
 using Domain.Options;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
@@ -10,13 +11,16 @@ namespace Persistence
     public class PostService : IPostService
     {
         private readonly IMongoCollection<Post> _posts;
+        private readonly IMapper _mapper;
 
-        public PostService(IOptions<MongoDbOptions> mongoDbOptions)
+        public PostService(IOptions<MongoDbOptions> mongoDbOptions, IMapper mapper)
         {
             MongoClient client = new MongoClient(mongoDbOptions.Value.ConnectionURI);
             IMongoDatabase database = client.GetDatabase(mongoDbOptions.Value.DatabaseName);
 
             _posts = database.GetCollection<Post>(mongoDbOptions.Value.CollectionName);
+
+            _mapper = mapper;
         }
 
         public async Task CreateAsync(Post post, CancellationToken cancellationToken)
@@ -44,7 +48,7 @@ namespace Persistence
             return await _posts.Find(new BsonDocument()).ToListAsync(cancellationToken);
         }
 
-        public async Task<Post> UpdatePostAsync(Post postToUpdate, CancellationToken cancellationToken)
+        public async Task<bool> UpdatePostAsync(Post postToUpdate, CancellationToken cancellationToken)
         {
             FilterDefinition<Post> filter = Builders<Post>.Filter.Eq("Id", postToUpdate.Id);
             UpdateDefinition<Post> update = Builders<Post>.Update
@@ -52,7 +56,13 @@ namespace Persistence
                 .Set(p => p.Message, postToUpdate.Message)
                 .Set(p => p.Modified, postToUpdate.Modified);
 
-            return await _posts.FindOneAndUpdateAsync(filter, update, null, cancellationToken);
+            var found = await _posts.FindOneAndUpdateAsync(filter, update, null, cancellationToken);
+            if (found == null)
+                return false;
+
+            _mapper.Map(found, postToUpdate);
+
+            return true;
         }
     }
 }
