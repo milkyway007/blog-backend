@@ -1,5 +1,5 @@
 ﻿using Application.Commands.Posts;
-using Application.Posts;
+using Application.Queries.Posts;
 using Blog.Contracts.V1.Requests;
 using Blog.Contracts.V1.Responses;
 using Domain.Entities;

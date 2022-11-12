@@ -2,7 +2,7 @@
 using MediatR;
 using Persistence.Interfaces;
 
-namespace Application.Posts
+namespace Application.Queries.Posts
 {
     public class Details
     {
@@ -13,16 +13,16 @@ namespace Application.Posts
 
         public class Handler : IRequestHandler<Query, Post>
         {
-            private readonly IPostService _postService;
+            private readonly IService<Post> _postService;
 
-            public Handler(IPostService postService)
+            public Handler(IService<Post> postService)
             {
                 _postService = postService;
             }
 
             public async Task<Post> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _postService.GetPostByIdAsync(request.Id, cancellationToken);
+                return await _postService.GetByIdAsync(request.Id, cancellationToken);
             }
         }
     }

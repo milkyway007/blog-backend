@@ -8,7 +8,7 @@ using Persistence.Interfaces;
 
 namespace Persistence
 {
-    public class PostService : IPostService
+    public class PostService : IService<Post>
     {
         private readonly IMongoCollection<Post> _posts;
         private readonly IMapper _mapper;
@@ -18,7 +18,7 @@ namespace Persistence
             MongoClient client = new MongoClient(mongoDbOptions.Value.ConnectionURI);
             IMongoDatabase database = client.GetDatabase(mongoDbOptions.Value.DatabaseName);
 
-            _posts = database.GetCollection<Post>(mongoDbOptions.Value.CollectionName);
+            _posts = database.GetCollection<Post>(mongoDbOptions.Value.PostsCollectionName);
 
             _mapper = mapper;
         }
@@ -28,7 +28,7 @@ namespace Persistence
             await _posts.InsertOneAsync(post, null, cancellationToken);
         }
 
-        public async Task<bool> DeletePostAsync(string postId, CancellationToken cancellationToken)
+        public async Task<bool> DeleteAsync(string postId, CancellationToken cancellationToken)
         {
             FilterDefinition<Post> filter = Builders<Post>.Filter.Eq("Id", postId);
             var deleted = await _posts.FindOneAndDeleteAsync(filter, null, cancellationToken);
@@ -36,19 +36,19 @@ namespace Persistence
             return deleted != null;
         }
 
-        public async Task<Post> GetPostByIdAsync(string postId, CancellationToken cancellationToken)
+        public async Task<Post> GetByIdAsync(string postId, CancellationToken cancellationToken)
         {
             FilterDefinition<Post> filter = Builders<Post>.Filter.Eq("Id", postId);
 
             return await _posts.Find(filter).FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task<List<Post>> GetPostsAsync(CancellationToken cancellationToken)
+        public async Task<List<Post>> GetAsync(CancellationToken cancellationToken)
         {
             return await _posts.Find(new BsonDocument()).ToListAsync(cancellationToken);
         }
 
-        public async Task<bool> UpdatePostAsync(Post postToUpdate, CancellationToken cancellationToken)
+        public async Task<bool> UpdateAsync(Post postToUpdate, CancellationToken cancellationToken)
         {
             FilterDefinition<Post> filter = Builders<Post>.Filter.Eq("Id", postToUpdate.Id);
             UpdateDefinition<Post> update = Builders<Post>.Update

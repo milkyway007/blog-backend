@@ -2,7 +2,7 @@
 using MediatR;
 using Persistence.Interfaces;
 
-namespace Application.Commands.Posts
+namespace Application.Commands.Comments
 {
     public class Delete
     {
@@ -13,16 +13,16 @@ namespace Application.Commands.Posts
 
         public class Handler : IRequestHandler<Command, bool>
         {
-            private readonly IService<Post> _postService;
+            private readonly IService<Comment> _commentService;
 
-            public Handler(IService<Post> postService)
+            public Handler(IService<Comment> commentService)
             {
-                _postService = postService;
+                _commentService = commentService;
             }
 
             public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
             {
-                return await _postService.DeleteAsync(request.Id, cancellationToken);
+                return await _commentService.DeleteAsync(request.Id, cancellationToken);
             }
         }
     }

@@ -1,4 +1,6 @@
-﻿namespace Blog.Installers
+﻿using Blog.Interfaces.Installers;
+
+namespace Blog.Installers
 {
     public static class InstallerExtensions
     {

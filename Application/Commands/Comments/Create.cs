@@ -1,28 +1,29 @@
 ﻿using Domain.Entities;
 using MediatR;
+using Persistence;
 using Persistence.Interfaces;
 
-namespace Application.Commands.Posts
+namespace Application.Commands.Comments
 {
     public class Create
     {
         public class Command : IRequest
         {
-            public Post Post { get; set; }
+            public Comment Comment { get; set; }
         }
 
         public class Handler : IRequestHandler<Command>
         {
-            private readonly IService<Post> _postService;
+            private readonly IService<Comment> _commentService;
 
-            public Handler(IService<Post> postService)
+            public Handler(IService<Comment> commentService)
             {
-                _postService = postService;
+                _commentService = commentService;
             }
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                await _postService.CreateAsync(request.Post, cancellationToken);
+                await _commentService.CreateAsync(request.Comment, cancellationToken);
 
                 return Unit.Value;
             }

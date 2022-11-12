@@ -19,16 +19,16 @@ namespace Application.Commands.Posts
 
         public class Handler : IRequestHandler<Query, bool>
         {
-            private readonly IPostService _postService;
+            private readonly IService<Post> _postService;
 
-            public Handler(IPostService postService)
+            public Handler(IService<Post> postService)
             {
                 _postService = postService;
             }
 
             public async Task<bool> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _postService.UpdatePostAsync(request.Post, cancellationToken);
+                return await _postService.UpdateAsync(request.Post, cancellationToken);
             }
         }
     }

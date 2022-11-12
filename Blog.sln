@@ -5,13 +5,15 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog", "Blog\Blog.csproj", "{51B550F0-BC10-4658-B0EF-D77FC530F744}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{17811916-08C0-410C-BBEF-42C3EE7BF364}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{17811916-08C0-410C-BBEF-42C3EE7BF364}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{1AC6BE66-D4AE-4359-934C-F94360F649AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{1AC6BE66-D4AE-4359-934C-F94360F649AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\Persistence.csproj", "{E0972E75-A14C-4C0B-9BB6-749A9EA5D0D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "Persistence\Persistence.csproj", "{E0972E75-A14C-4C0B-9BB6-749A9EA5D0D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.Interfaces", "Persistence.Interfaces\Persistence.Interfaces.csproj", "{307673C2-7F70-40EB-ABC4-7C639C1B9998}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence.Interfaces", "Persistence.Interfaces\Persistence.Interfaces.csproj", "{307673C2-7F70-40EB-ABC4-7C639C1B9998}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Interfaces", "Blog.Interfaces\Blog.Interfaces.csproj", "{FDDB5916-3955-4B0C-8189-CDBF5E86DD42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{307673C2-7F70-40EB-ABC4-7C639C1B9998}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{307673C2-7F70-40EB-ABC4-7C639C1B9998}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{307673C2-7F70-40EB-ABC4-7C639C1B9998}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDDB5916-3955-4B0C-8189-CDBF5E86DD42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDDB5916-3955-4B0C-8189-CDBF5E86DD42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDDB5916-3955-4B0C-8189-CDBF5E86DD42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDDB5916-3955-4B0C-8189-CDBF5E86DD42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,6 @@
 ﻿using Application.Core;
-using Application.Posts;
+using Application.Queries.Posts;
+using Blog.Interfaces.Installers;
 using MediatR;
 using Microsoft.OpenApi.Models;
 using System.Text.Json;

@@ -1,4 +1,6 @@
-﻿using Domain.Options;
+﻿using Blog.Interfaces.Installers;
+using Domain.Entities;
+using Domain.Options;
 using Persistence;
 using Persistence.Interfaces;
 
@@ -10,7 +12,8 @@ namespace Blog.Installers
         {
             services.Configure<MongoDbOptions>(configuration.GetSection("MongoDB"));
 
-            services.AddSingleton<IPostService, PostService>();
+            services.AddSingleton<IService<Post>, PostService>();
+            services.AddSingleton<IService<Comment>, CommentService>();
         }
     }
 }

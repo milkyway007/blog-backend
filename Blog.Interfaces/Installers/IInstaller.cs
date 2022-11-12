@@ -1,4 +1,7 @@
-﻿namespace Blog.Interfaces.Installers
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Blog.Installers
 {
     public interface IInstaller
     {
